@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      img {
+        border-radius: 50%;
+        border: 5px #333 solid;
+        margin-bottom: 1 rem;
+      }
+
+      .male {
+        border-color: steelblue;
+        background-color: steelblue;
+      }
+
+      .female {
+        border-color: pink;
+        background-color: pink;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <img
+        v-bind:src="image"
+        :alt="`${firstname} ${lastname}`"
+        width="100"
+        height="100"
+        :class="gender"
+      />
+      <h1>Welcome {{ firstname}} {{lastname}}</h1>
+      <h1>Email -: {{email}}</h1>
+      <button v-on:click="getUser" :class="gender">Generate User</button>
+    </div>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
