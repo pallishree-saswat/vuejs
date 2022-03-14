@@ -3,10 +3,8 @@
     <div class="left">
       <h1>Sign Up</h1>
       <p>create a new account</p>
-      <button @click="count++">Add 1</button>
-      <p>Count is: {{ count }}</p>
 
-      <form @click="onSubmit">
+      <form>
         <label for="firstname">firstname</label>
         <input
           type="text"
@@ -34,7 +32,12 @@
         <label for="adhaar">Adhaar Number</label>
         <input type="text" v-model="adhaar" name="adhaar" id="adhaar" />
 
-        <input class="button" type="button" value="Sign Up" />
+        <input
+          @click="handleSubmit"
+          class="button"
+          type="button"
+          value="Sign Up"
+        />
       </form>
     </div>
 
@@ -46,6 +49,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   name: "Signup",
   data() {
@@ -60,7 +64,7 @@ export default {
     };
   },
   methods: {
-    onSubmit(e) {
+    handleSubmit: async function (e) {
       e.preventDefault();
       console.log("hiii");
       if (!this.firstname) {
@@ -79,22 +83,22 @@ export default {
         const newUser = {
           firstname: this.firstname,
           lastname: this.lastname,
+          mobile: this.mobile,
           email: this.email,
           password: this.password,
-          mobile: this.mobile,
           adhaar: this.adhaar,
         };
-
-        const response = await axios.post("http://localhost:8000/signup", {
-          newUser,
-        });
-        console.log(response.data);
-        this.firstname = "";
-        this.lastname = "";
-        this.email = "";
-        this.mobile = "";
-        this.password = "";
-        this.adhaar = "";
+        await axios
+          .post("http://localhost:8000/signup", newUser)
+          .then((res) => {
+            console.log(res);
+            let fullname = `${res.data.firstname} ${res.data.lastname}`;
+            localStorage.setItem("user_full_name", fullname);
+            this.$router.push("/login");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
   },
